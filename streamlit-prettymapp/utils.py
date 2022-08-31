@@ -16,15 +16,13 @@ from prettymapp.settings import STYLES
 @st.experimental_memo(show_spinner=False)
 def st_get_osm_geometries(aoi):
     """Wrapper to enable streamlit caching for package function"""
-    df = get_osm_geometries(aoi=aoi)
-    return df
+    return get_osm_geometries(aoi=aoi)
 
 
 @st.experimental_memo(show_spinner=False)
 def st_plot_all(_df: GeoDataFrame, **kwargs):
     """Wrapper to enable streamlit caching for package function"""
-    fig = Plot(_df, **kwargs).plot_all()
-    return fig
+    return Plot(_df, **kwargs).plot_all()
 
 
 def get_colors_from_style(style: str) -> dict:
@@ -48,26 +46,22 @@ def plt_to_svg(fig: figure) -> str:
         imgdata, format="svg", pad_inches=0, bbox_inches="tight", transparent=True
     )
     imgdata.seek(0)
-    svg_string = imgdata.getvalue()
-    return svg_string
+    return imgdata.getvalue()
 
 
 def svg_to_html(svg_string: str) -> str:
     b64 = base64.b64encode(svg_string.encode("utf-8")).decode("utf-8")
     css_justify = "center"
-    css = '<p style="text-align:center; display: flex; flex-direction: column; justify-content: {};">'.format(
-        css_justify
-    )
-    html = r'{}<img src="data:image/svg+xml;base64,{}"/>'.format(css, b64)
-    return html
+    css = f'<p style="text-align:center; display: flex; flex-direction: column; justify-content: {css_justify};">'
+
+    return f'{css}<img src="data:image/svg+xml;base64,{b64}"/>'
 
 
 def plt_to_href(fig: figure, filename: str):
     buf = BytesIO()
     fig.savefig(buf, format="png", pad_inches=0, bbox_inches="tight", transparent=True)
     img_str = base64.b64encode(buf.getvalue()).decode()
-    href = f'<a href="data:file/txt;base64,{img_str}" download="{filename}"></a>'
-    return href
+    return f'<a href="data:file/txt;base64,{img_str}" download="{filename}"></a>'
 
 
 def slugify(value: Any, allow_unicode: bool = False):

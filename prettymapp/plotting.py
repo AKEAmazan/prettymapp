@@ -28,8 +28,7 @@ def adjust_lightness(color: str, amount: float = 0.5) -> Tuple[float, float, flo
     except KeyError:
         c = color
     c = colorsys.rgb_to_hls(*to_rgb(c))
-    adjusted_c = colorsys.hls_to_rgb(c[0], max(0, min(1, amount * c[1])), c[2])
-    return adjusted_c
+    return colorsys.hls_to_rgb(c[0], max(0, min(1, amount * c[1])), c[2])
 
 
 @dataclass
@@ -227,9 +226,9 @@ class Plot:
 
     def set_credits(self, add_package_credit=True):
         credit_text = "© OpenStreetMap"
-        package_credit_text = "\n prettymapp | prettymaps"
         if add_package_credit:
-            credit_text = credit_text + package_credit_text
+            package_credit_text = "\n prettymapp | prettymaps"
+            credit_text += package_credit_text
 
         x = self.xmin + 0.87 * self.xdif
         y = self.ymin - 0.70 * self.bg_buffer_y
